@@ -1,0 +1,52 @@
+
+[
+  {
+    "event_type": "login_failed",
+    "source_ip": "192.0.2.10",
+    "username": "misa"
+  },
+  {
+    "event_type": "login_failed",
+    "source_ip": "192.0.2.10",
+    "username": "misa"
+  },
+  {
+    "event_type": "login_failed",
+    "source_ip": "192.0.2.10",
+    "username": "Roman"
+  },
+  {
+    "event_type": "login_success",
+    "source_ip": "192.0.2.20",
+    "username": "misa"
+  },
+  {
+    "event_type": "service_started",
+    "source_ip": "127.0.0.1"
+  },
+  {
+    "event_type": "connection_attempt",
+    "source_ip": "192.0.2.50",
+    "destination_port": 22
+  },
+  {
+    "event_type": "connection_attempt",
+    "source_ip": "192.0.2.50",
+    "destination_port": 80
+  },
+  {
+    "event_type": "connection_attempt",
+    "source_ip": "192.0.2.50",
+    "destination_port": 443
+  },
+  {
+    "event_type": "connection_attempt",
+    "source_ip": "192.0.2.50",
+    "destination_port": 3389
+  },
+  {
+    "event_type": "connection_attempt",
+    "source_ip": "192.0.2.50",
+    "destination_port": 8080
+  }
+]

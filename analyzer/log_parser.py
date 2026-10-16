@@ -9,7 +9,11 @@ from analyzer.detection_rules import (
 from database.db import initialize_db, save_alert
 
 
-def load_logs(file_path):
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_LOGS_PATH = PROJECT_ROOT / "data" / "sample_logs.json"
+
+
+def load_logs(file_path=DEFAULT_LOGS_PATH):
     """Load security events from a JSON file."""
     path = Path(file_path)
 
@@ -22,11 +26,9 @@ def load_logs(file_path):
     return logs
 
 
-def main():
-    project_root = Path(__file__).resolve().parent.parent
-    logs_path = project_root / "data" / "sample_logs.json"
-
-    logs = load_logs(logs_path)
+def analyze_logs(file_path=DEFAULT_LOGS_PATH):
+    """Analyze logs, save detected alerts, and return a summary."""
+    logs = load_logs(file_path)
 
     brute_force_alerts = detect_brute_force(logs)
     port_scan_alerts = detect_port_scan(logs)
@@ -38,17 +40,22 @@ def main():
     for alert in alerts:
         save_alert(alert)
 
-    print("=== CuteSOC Security Alerts ===")
-    print(f"Events analyzed: {len(logs)}")
-    print(f"Brute-force alerts: {len(brute_force_alerts)}")
-    print(f"Port-scan alerts: {len(port_scan_alerts)}")
-    print(f"Alerts processed: {len(alerts)}")
+    return {
+        "events_analyzed": len(logs),
+        "brute_force_alerts": len(brute_force_alerts),
+        "port_scan_alerts": len(port_scan_alerts),
+        "alerts_processed": len(alerts),
+    }
 
-    for alert in alerts:
-        print(f"\n[{alert['severity']}] {alert['event']}")
-        print(f"Source IP: {alert['source_ip']}")
-        print(f"Count: {alert['failed_attempts']}")
-        print(f"Status: {alert['status']}")
+
+def main():
+    summary = analyze_logs()
+
+    print("=== CuteSOC Security Alerts ===")
+    print(f"Events analyzed: {summary['events_analyzed']}")
+    print(f"Brute-force alerts: {summary['brute_force_alerts']}")
+    print(f"Port-scan alerts: {summary['port_scan_alerts']}")
+    print(f"Alerts processed: {summary['alerts_processed']}")
 
 
 if __name__ == "__main__":

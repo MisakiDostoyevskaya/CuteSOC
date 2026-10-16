@@ -532,3 +532,58 @@ code {
         width: 100%;
     }
 }
+
+
+.panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.analyze-form {
+    margin: 0;
+}
+
+.analyze-button {
+    border: 1px solid #a78bfa;
+    border-radius: 10px;
+    padding: 10px 16px;
+    background: #8b5cf6;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.analyze-button:hover {
+    background: #7c3aed;
+    transform: translateY(-1px);
+}
+
+.analyze-button:focus-visible {
+    outline: 2px solid #e9d5ff;
+    outline-offset: 3px;
+}
+
+
+.notice {
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    border: 1px solid;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.notice-success {
+    color: #8ee6c0;
+    background: #142a25;
+    border-color: #285b4b;
+}
+
+.notice-error {
+    color: #ff8da8;
+    background: #301923;
+    border-color: #713044;
+}

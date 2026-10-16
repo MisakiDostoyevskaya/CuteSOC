@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <meta name="theme-color" content="#100d18">
     <title>CuteSOC | Security Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script defer src="{{ url_for('static', filename='dashboard.js') }}"></script>
 </head>
 <body>
     <div class="app-shell">
@@ -20,7 +22,7 @@
                 <span>◈</span> Dashboard
             </a>
             <a class="nav-link" href="#alerts">
-                <span>⌁</span> Security alerts
+                <span>▣</span> Security alerts
             </a>
 
             <div class="sidebar-bottom">
@@ -37,9 +39,7 @@
                 <div>
                     <p class="eyebrow">SECURITY OPERATIONS CENTER</p>
                     <h1>Welcome to your <span class="accent">SOC</span> ♡</h1>
-                    <p class="subtitle">
-                        Your little corner of cybersecurity.
-                    </p>
+                    <p class="subtitle">Your little corner of cybersecurity.</p>
                 </div>
 
                 <div class="system-badge">
@@ -77,13 +77,35 @@
                 </article>
             </section>
 
+            {% if message %}
+            <div class="notice notice-success" role="status">
+                <strong>✓ Analysis completed</strong>
+                <p>{{ message }}</p>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="notice notice-error" role="alert">
+                <strong>Analysis failed</strong>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
             <section class="panel" id="alerts">
                 <div class="panel-heading">
                     <div>
                         <p class="eyebrow">THREAT MONITORING</p>
                         <h2>Security alerts <span class="heart">♡</span></h2>
                     </div>
-                    <span class="count-badge">{{ alerts|length }} results</span>
+
+                    <div class="panel-actions">
+                        <span class="count-badge">{{ alerts|length }} results</span>
+                        <form action="{{ url_for('run_analysis') }}" method="post" class="analyze-form">
+                            <button type="submit" class="analyze-button">
+                                Analyze logs
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <form class="filters" method="get" action="/">
@@ -91,18 +113,9 @@
                         <span>Severity</span>
                         <select name="severity">
                             <option value="">All severities</option>
-                            <option value="HIGH"
-                                {% if severity == "HIGH" %}selected{% endif %}>
-                                High
-                            </option>
-                            <option value="MEDIUM"
-                                {% if severity == "MEDIUM" %}selected{% endif %}>
-                                Medium
-                            </option>
-                            <option value="LOW"
-                                {% if severity == "LOW" %}selected{% endif %}>
-                                Low
-                            </option>
+                            <option value="HIGH" {% if severity == "HIGH" %}selected{% endif %}>High</option>
+                            <option value="MEDIUM" {% if severity == "MEDIUM" %}selected{% endif %}>Medium</option>
+                            <option value="LOW" {% if severity == "LOW" %}selected{% endif %}>Low</option>
                         </select>
                     </label>
 

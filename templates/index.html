@@ -5,22 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#100d18">
     <title>CuteSOC | Security Dashboard</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%9C%3C/text%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ asset_version('style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+    <body>
     <div class="app-shell">
         <aside class="sidebar">
-            <a class="brand" href="{{ url_for('dashboard') }}">
+            <a class="brand" href="/">
                 <span class="brand-icon">♡</span>
                 <span>Cute<span class="accent">SOC</span></span>
             </a>
 
             <p class="nav-label">WORKSPACE</p>
-            <a class="nav-link active" href="{{ url_for('dashboard') }}">
+            <a class="nav-link active" href="/">
                 <span>◈</span> Dashboard
             </a>
             <a class="nav-link" href="#alerts">
@@ -73,15 +69,6 @@
 
                 <article class="stat-card">
                     <div class="stat-top">
-                        <span>Medium severity</span>
-                        <span class="stat-icon amber">◐</span>
-                    </div>
-                    <div class="stat-number">{{ stats.medium_alerts }}</div>
-                    <p>Alerts marked MEDIUM</p>
-                </article>
-
-                <article class="stat-card">
-                    <div class="stat-top">
                         <span>Source IPs</span>
                         <span class="stat-icon lilac">⌘</span>
                     </div>
@@ -99,7 +86,7 @@
                     <span class="count-badge">{{ alerts|length }} results</span>
                 </div>
 
-                <form class="filters" method="get" action="{{ url_for('dashboard') }}">
+                <form class="filters" method="get" action="/">
                     <label>
                         <span>Severity</span>
                         <select name="severity">
@@ -130,32 +117,32 @@
                     </label>
 
                     <button type="submit">Filter alerts ↗</button>
-                    <a class="reset-link" href="{{ url_for('dashboard') }}">Reset</a>
+                    <a class="reset-link" href="/">Reset</a>
                 </form>
 
                 <div class="table-wrap">
-                    <table id="alerts-table">
+                    <table>
                         <thead>
                             <tr>
-                                <th data-sort="sev" tabindex="0" title="Click to sort">SEVERITY</th>
-                                <th data-sort="text" tabindex="0" title="Click to sort">EVENT</th>
-                                <th data-sort="text" tabindex="0" title="Click to sort">SOURCE IP</th>
-                                <th data-sort="num" tabindex="0" title="Click to sort">ATTEMPTS</th>
-                                <th data-sort="text" tabindex="0" title="Click to sort">STATUS</th>
-                                <th data-sort="text" tabindex="0" title="Click to sort">TIMESTAMP</th>
+                                <th>SEVERITY</th>
+                                <th>EVENT</th>
+                                <th>SOURCE IP</th>
+                                <th>ATTEMPTS</th>
+                                <th>STATUS</th>
+                                <th>TIMESTAMP</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for alert in alerts %}
                             <tr>
                                 <td>
-                                    <span class="severity {{ alert.severity|lower }}" data-rank="{{ {'HIGH':3,'MEDIUM':2,'LOW':1}.get(alert.severity, 0) }}">
+                                    <span class="severity {{ alert.severity|lower }}">
                                         <span class="severity-dot"></span>
                                         {{ alert.severity }}
                                     </span>
                                 </td>
                                 <td class="event-name">{{ alert.event }}</td>
-                                <td><code class="copy-ip" title="Click to copy">{{ alert.source_ip }}</code></td>
+                                <td><code>{{ alert.source_ip }}</code></td>
                                 <td>{{ alert.failed_attempts }}</td>
                                 <td>{{ alert.status }}</td>
                                 <td class="timestamp">{{ alert.timestamp }}</td>
@@ -184,7 +171,5 @@
             </footer>
         </main>
     </div>
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="{{ url_for('static', filename='dashboard.js') }}?v={{ asset_version('dashboard.js') }}" defer></script>
 </body>
-</html>
+</html>

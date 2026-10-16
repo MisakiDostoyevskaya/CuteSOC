@@ -1,49 +1,56 @@
 # CuteSOC ♡
 
-A tiny Security Operations Center dashboard built with Python, Flask and SQLite.
-It reads security logs, detects suspicious behaviour and shows the alerts in a cute dark-lilac dashboard.
+CuteSOC es un pequeño Security Operations Center de práctica: detección de eventos sospechosos con Python, Flask y SQLite, más un prototipo estático interactivo para GitHub Pages.
 
-## Features
+## Demo pública (GitHub Pages)
 
-- **Brute-force detection**: repeated `login_failed` events from the same IP.
-- **Port-scan detection**: one IP contacting many distinct destination ports.
-- **Dashboard**: stats cards, severity/IP filters, sortable columns, click an IP to copy it, press `/` to search.
+La versión estática vive en `docs/` y no requiere Python ni un servidor:
+- métricas y gráficos ilustrativos
+- búsqueda, filtros por severidad y ordenamiento de alertas
+- panel de detalle por incidente
+- flujo de eventos simulado
 
-## Project layout
+**Importante:** la demo de GitHub Pages usa datos ficticios de ejemplo. No está conectada al backend Flask ni monitorea una red real.
 
-```
-app.py                  Flask app (dashboard)
-analyzer/               log parser + detection rules
-database/               SQLite helpers (cutesoc.db is created automatically)
-data/sample_logs.json   sample events
-static/                 style.css, dashboard.js
-templates/index.html    dashboard template
-tests/                  unit tests
-```
+Para publicarla:
+1. En GitHub, abrí el repositorio `CuteSOC`.
+2. Entrá en **Settings → Pages**.
+3. En **Build and deployment**, elegí **Deploy from a branch**.
+4. Seleccioná la rama `main` y la carpeta `/docs`, y guardá.
+5. Esperá a que termine el despliegue. La URL del proyecto debería ser `https://misakidostoyevskaya.github.io/CuteSOC/`.
 
-## Run it
+## Backend local Flask + SQLite
 
-```bash
+Desde la carpeta del proyecto:
+
+```powershell
 python -m venv .venv
-# Windows: .venv\Scripts\activate      macOS/Linux: source .venv/bin/activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
-python -m analyzer.log_parser   # analyze data/sample_logs.json and save alerts
-python app.py                   # then open http://127.0.0.1:5000
+python -m analyzer.log_parser
+python app.py
 ```
 
-> ⚠️ Open the dashboard through the Flask URL above. Double-clicking
-> `templates/index.html` will show an unstyled page, because the template needs
-> Flask to resolve `{{ url_for(...) }}` and serve `/static/style.css`.
+Abrí `http://127.0.0.1:5000`.
+
+La aplicación Flask usa `templates/index.html` y `static/`. Esos archivos se mantienen separados de `docs/`, que es la versión estática de GitHub Pages.
 
 ## Tests
 
-```bash
-python -m unittest discover -v
+```powershell
+python -m unittest discover -s tests -v
 ```
 
-## Troubleshooting: "the CSS isn't applied"
+## Estructura
 
-1. Make sure you opened `http://127.0.0.1:5000`, not the `.html` file.
-2. Hard-refresh the browser (Ctrl+F5 / Cmd+Shift+R). The app already disables static caching and versions the CSS URL.
-3. Check that `http://127.0.0.1:5000/static/style.css` loads in the browser.
+```text
+app.py                  Backend Flask
+analyzer/               Parser y reglas de detección
+database/               Acceso SQLite
+data/                   Logs de muestra
+static/                 CSS y JavaScript del dashboard Flask
+templates/index.html    Plantilla Jinja del backend
+docs/index.html         Prototipo estático para GitHub Pages
+docs/assets/            CSS y JavaScript estáticos
+tests/                  Pruebas unitarias
+```
